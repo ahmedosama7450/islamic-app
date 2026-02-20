@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Search, X, ArrowDownUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { searchNarrators } from "@/lib/api/narrators";
 import type { Narrator } from "@/lib/api/types";
 
@@ -121,7 +120,7 @@ export function SearchFilters() {
     textQuery.trim() || bookId.trim() || selectedNarrators.length > 0;
 
   return (
-    <div className="space-y-4 text-start">
+    <div className="min-w-0 space-y-4 text-start">
       {/* Primary search - large and prominent */}
       <div className="relative flex items-center">
         <Search className="pointer-events-none absolute start-5 top-1/2 size-6 -translate-y-1/2 text-gold/60" />
@@ -155,16 +154,16 @@ export function SearchFilters() {
       </div>
 
       {/* Secondary filters row */}
-      <div className="flex flex-col gap-2 sm:flex-row">
+      <div className="flex min-w-0 flex-col gap-2 sm:flex-row">
         <Input
           type="number"
           placeholder="رقم الكتاب"
           value={bookId}
           onChange={(e) => setBookId(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-          className="h-10 border-gold/20 bg-background/80 backdrop-blur-sm sm:w-36"
+          className="h-10 shrink-0 border-gold/20 bg-background/80 backdrop-blur-sm sm:w-36"
         />
-        <div className="relative flex-1">
+        <div className="relative min-w-0 flex-1">
           <Input
             ref={narratorInputRef}
             placeholder="ابحث عن راوٍ بالاسم..."
@@ -198,9 +197,9 @@ export function SearchFilters() {
                       onClick={() => addNarrator(narrator)}
                       className="flex w-full items-center gap-2 rounded-sm px-3 py-2 text-start text-sm transition-colors hover:bg-accent disabled:opacity-50"
                     >
-                      <span className="font-medium">{narrator.name}</span>
+                      <span className="min-w-0 truncate font-medium">{narrator.name}</span>
                       {narrator.kunya && (
-                        <span className="text-muted-foreground">
+                        <span className="shrink-0 text-muted-foreground">
                           ({narrator.kunya})
                         </span>
                       )}
@@ -217,17 +216,17 @@ export function SearchFilters() {
       {selectedNarrators.length > 0 && (
         <div className="flex flex-wrap items-center gap-2 rounded-lg bg-background/50 p-2">
           {selectedNarrators.map((narrator, index) => (
-            <Badge key={narrator.id} variant="secondary" className="gap-1 pe-1">
-              <span className="text-xs text-muted-foreground">{index + 1}</span>
-              {narrator.name}
+            <span key={narrator.id} className="flex max-w-full items-start gap-1 rounded-full border border-transparent bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground">
+              <span className="shrink-0 text-muted-foreground">{index + 1}</span>
+              <span className="break-all">{narrator.name}</span>
               <button
                 type="button"
                 onClick={() => removeNarrator(narrator.id)}
-                className="ms-0.5 rounded-full p-0.5 hover:bg-foreground/10"
+                className="ms-0.5 shrink-0 rounded-full p-0.5 hover:bg-foreground/10"
               >
                 <X className="size-3" />
               </button>
-            </Badge>
+            </span>
           ))}
           <Button
             variant="ghost"
