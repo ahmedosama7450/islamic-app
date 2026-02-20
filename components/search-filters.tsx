@@ -6,7 +6,6 @@ import { Search, X, ArrowDownUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { searchNarrators } from "@/lib/api/narrators";
 import type { Narrator } from "@/lib/api/types";
 
@@ -122,32 +121,50 @@ export function SearchFilters() {
     textQuery.trim() || bookId.trim() || selectedNarrators.length > 0;
 
   return (
-    <div className="mx-auto max-w-5xl space-y-4 px-4 py-6">
-      {/* Text search */}
-      <div className="flex gap-2">
-        <div className="relative flex-1">
-          <Search className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="ابحث في نص الحديث..."
-            value={textQuery}
-            onChange={(e) => setTextQuery(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-            className="ps-9"
-          />
+    <div className="space-y-4 text-start">
+      {/* Primary search - large and prominent */}
+      <div className="relative flex items-center">
+        <Search className="pointer-events-none absolute start-5 top-1/2 size-6 -translate-y-1/2 text-gold/60" />
+        <Input
+          placeholder="ابحث في نص الحديث..."
+          value={textQuery}
+          onChange={(e) => setTextQuery(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+          className="h-14 rounded-2xl border-gold/30 bg-background pe-28 ps-13 text-lg shadow-md ring-2 ring-gold/10 placeholder:text-muted-foreground/60 focus-visible:border-gold/50 focus-visible:ring-gold/25 sm:h-16 sm:pe-36 sm:text-xl"
+        />
+        <div className="absolute end-2 flex items-center gap-1.5">
+          {hasFilters && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleClear}
+              className="h-8 text-muted-foreground hover:text-foreground sm:h-9"
+            >
+              مسح
+            </Button>
+          )}
+          <Button
+            onClick={handleSubmit}
+            disabled={!hasFilters}
+            className="h-9 rounded-xl bg-gold px-4 text-gold-foreground hover:bg-gold/90 sm:h-10 sm:px-5"
+          >
+            <Search className="size-4" />
+            بحث
+          </Button>
         </div>
+      </div>
+
+      {/* Secondary filters row */}
+      <div className="flex flex-col gap-2 sm:flex-row">
         <Input
           type="number"
           placeholder="رقم الكتاب"
           value={bookId}
           onChange={(e) => setBookId(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-          className="w-28 sm:w-32"
+          className="h-10 border-gold/20 bg-background/80 backdrop-blur-sm sm:w-36"
         />
-      </div>
-
-      {/* Narrator search */}
-      <div className="space-y-2">
-        <div className="relative">
+        <div className="relative flex-1">
           <Input
             ref={narratorInputRef}
             placeholder="ابحث عن راوٍ بالاسم..."
@@ -157,6 +174,7 @@ export function SearchFilters() {
               setShowNarratorDropdown(true);
             }}
             onFocus={() => narratorQuery.trim() && setShowNarratorDropdown(true)}
+            className="h-10 border-gold/20 bg-background/80 backdrop-blur-sm"
           />
           {showNarratorDropdown && (narratorResults.length > 0 || loadingNarrators) && (
             <div
@@ -193,50 +211,36 @@ export function SearchFilters() {
             </div>
           )}
         </div>
-
-        {/* Selected narrators as chips */}
-        {selectedNarrators.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2">
-            {selectedNarrators.map((narrator, index) => (
-              <Badge key={narrator.id} variant="secondary" className="gap-1 pe-1">
-                <span className="text-xs text-muted-foreground">{index + 1}</span>
-                {narrator.name}
-                <button
-                  type="button"
-                  onClick={() => removeNarrator(narrator.id)}
-                  className="ms-0.5 rounded-full p-0.5 hover:bg-foreground/10"
-                >
-                  <X className="size-3" />
-                </button>
-              </Badge>
-            ))}
-            <Button
-              variant="ghost"
-              size="xs"
-              onClick={() => setOrdered(!ordered)}
-              className="gap-1 text-xs"
-            >
-              <ArrowDownUp className="size-3" />
-              {ordered ? "مرتب" : "غير مرتب"}
-            </Button>
-          </div>
-        )}
       </div>
 
-      <Separator />
-
-      {/* Action buttons */}
-      <div className="flex gap-2">
-        <Button onClick={handleSubmit} disabled={!hasFilters}>
-          <Search className="size-4" />
-          بحث
-        </Button>
-        {hasFilters && (
-          <Button variant="outline" onClick={handleClear}>
-            مسح
+      {/* Selected narrators as chips */}
+      {selectedNarrators.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 rounded-lg bg-background/50 p-2">
+          {selectedNarrators.map((narrator, index) => (
+            <Badge key={narrator.id} variant="secondary" className="gap-1 pe-1">
+              <span className="text-xs text-muted-foreground">{index + 1}</span>
+              {narrator.name}
+              <button
+                type="button"
+                onClick={() => removeNarrator(narrator.id)}
+                className="ms-0.5 rounded-full p-0.5 hover:bg-foreground/10"
+              >
+                <X className="size-3" />
+              </button>
+            </Badge>
+          ))}
+          <Button
+            variant="ghost"
+            size="xs"
+            onClick={() => setOrdered(!ordered)}
+            className="gap-1 text-xs"
+          >
+            <ArrowDownUp className="size-3" />
+            {ordered ? "مرتب" : "غير مرتب"}
           </Button>
-        )}
-      </div>
+        </div>
+      )}
+
     </div>
   );
 }

@@ -40,8 +40,9 @@ export default async function HomePage({ searchParams }: PageProps) {
 
   return (
     <>
-      <HeroSection />
-      <SearchFilters />
+      <HeroSection>
+        <SearchFilters />
+      </HeroSection>
       <Suspense
         fallback={
           <div className="mx-auto max-w-5xl space-y-3 px-4 pb-8">
