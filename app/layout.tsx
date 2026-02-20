@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "باحث الحديث",
+  title: "حدثنا",
   description: "محرك بحث في الأحاديث النبوية والرواة",
 };
 

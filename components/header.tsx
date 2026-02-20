@@ -17,7 +17,7 @@ export function Header() {
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2 text-primary">
           <BookOpen className="size-6" />
-          <span className="text-lg font-bold">باحث الحديث</span>
+          <span className="text-lg font-bold">حدثنا</span>
         </Link>
 
         <div className="flex items-center gap-1">
