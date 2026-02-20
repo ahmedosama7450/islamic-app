@@ -216,9 +216,9 @@ export function SearchFilters() {
       {selectedNarrators.length > 0 && (
         <div className="flex flex-wrap items-center gap-2 rounded-lg bg-background/50 p-2">
           {selectedNarrators.map((narrator, index) => (
-            <span key={narrator.id} className="flex max-w-full items-start gap-1 rounded-full border border-transparent bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground">
+            <span key={narrator.id} className="flex max-w-full items-center gap-1 rounded-full border border-transparent bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground">
               <span className="shrink-0 text-muted-foreground">{index + 1}</span>
-              <span className="break-all">{narrator.name}</span>
+              <span className="min-w-0 truncate">{narrator.name}</span>
               <button
                 type="button"
                 onClick={() => removeNarrator(narrator.id)}
